@@ -11,7 +11,7 @@ function showArea(event){
 }
 
 document.addEventListener('click', function (event) {
-	if (!event.target.matches('.tricks')){
-    alert("you have clicked me");
+	if (!event.target.matches('.tricks_path')){
+    alert("you have clicked me!!!!!");
   } return;
 }, false);
