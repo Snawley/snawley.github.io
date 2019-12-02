@@ -1,45 +1,101 @@
 /*TODO:
-  - hover unavailable tricks show preReqs
-  - hover available show prereqs preReqs satisfied
-  - learning an avaialble trick plays a transition/fading effect
-  - hover learned show exp gained and a message
-  - show exp on page
+  -MOAR transitions!!!!
+    - learning an avaialble trick plays a transition/fading effect
+  - show level & exp on page
   */
 
-function getColouredPElement(reqText, satisfied) {
-  let reqP = document.createElement("p");
-  reqP.appendChild(document.createTextNode(reqText));
-  if(satisfied) reqP.style.color = "green";
-  else reqP.style.color = "red";
-  return  reqP;
+function hideHoverText(event) {
+  let topMessage = document.querySelector("h1.message");
+  topMessage.innerHTML = "SKATE UP!"; // top message default
+  topMessage.style.color = "#32323c"; // default trick fill
+  document.querySelector("#expGain").innerHTML = ""; // clear the exp gain
+  document.querySelector("h3.reqs").innerHTML = ""; // clear the reqs heading
+  document.querySelector("ul.reqs").innerHTML = ""; // clear the unordered list
+  if(event.target.parentElement.querySelector(".trick_text_path_available") != null) {
+    event.target.parentElement.querySelector(".trick_text_path_available").style.removeProperty("fill");
+  }
+  else if(event.target.parentElement.querySelector(".trick_text_path_learned") != null) {
+    event.target.parentElement.querySelector(".trick_text_path_learned").style.removeProperty("fill");
+  }
 }
-function showReqs(trick, event) {
-  let reqsElement = document.querySelector("#reqs");
-  reqsElement.innerHTML = trick.id + " requires:";
 
-  let expReqText = "Exp: " + exp + "/" + trick.expReq;
-  let expReqP = getColouredPElement(expReqText, (exp >= trick.expReq));
-  reqsElement.appendChild(expReqP);
+var unmetReqColour = "#FFb3b3";
+var metReqColour = "#66b366";
+var defaultLineHeight = "1.5em";
+function getColouredElement(reqText, satisfied, lineHeight = defaultLineHeight) {
+  let req = document.createElement("li");
+  req.appendChild(document.createTextNode(reqText));
+  req.style.color =  satisfied ? metReqColour : unmetReqColour;
+  req.style.lineHeight = lineHeight;
+  return req;
+}
 
+function appendReqsToUL(trick) {
+  var reqsUL = document.querySelector("ul.reqs");
+  // first append the exp requirement
+  let expReqText = trick.expReq + " exp. (" + exp + "/" + trick.expReq + ")";
+  reqsUL.appendChild(getColouredElement(expReqText, (exp >= trick.expReq)));
+  // now apeend the trick prerequisites
   if(trick.numPreReqs >= 1) {
     let preReq1 = trick.preReqs[0];
-    let preReq1Text = preReq1.reqCnt + " " + preReq1.id + "s (" + tricks[preReq1.id].availableCnt + "/" + preReq1.reqCnt + ")";
+    let s = (preReq1.reqCnt > 1) ? "s" : "";
+    let preReq1Text = "Do " + preReq1.reqCnt + " " + preReq1.id + s + " (" + tricks[preReq1.id].availableCnt + "/" + preReq1.reqCnt + ")";
+    let lineHeight = defaultLineHeight;
     if(preReq1.altId != undefined) {
-      preReq1Text += " or " + preReq1.altId + ": " + tricks[preReq1.altId].availableCnt + "/" + preReq1.altCnt;
+      let s = (preReq1.altCnt > 1) ? "s" : "";
+      preReq1Text += "\nor " + preReq1.altCnt + " " + preReq1.altId + s + " (" + tricks[preReq1.altId].availableCnt + "/" + preReq1.altCnt + ")";
+      lineHeight = "1.2em";
     }
-    let preReq1P = getColouredPElement(preReq1Text, preReqSatisfied(preReq1));
-    reqsElement.appendChild(preReq1P);
+    reqsUL.appendChild(getColouredElement(preReq1Text, preReqSatisfied(preReq1), lineHeight));
   }
   if(trick.numPreReqs == 2) {
     let preReq2 = trick.preReqs[1];
-    let preReq2Text = preReq2.id + ": " + tricks[preReq2.id].availableCnt + "/" + preReq2.reqCnt;
+    let s = (preReq2.reqCnt > 1) ? "s" : "";
+    let preReq2Text = "Do " + preReq2.reqCnt + " " + preReq2.id + s + " (" + tricks[preReq2.id].availableCnt + "/" + preReq2.reqCnt + ")";
+    let lineHeight = defaultLineHeight;
     if(preReq2.altId != undefined) {
-      preReq2Text += " or " + preReq2.altId + ": " + tricks[preReq2.altId].availableCnt + "/" + preReq2.altCnt;
+      let s = (preReq2.altCnt > 1) ? "s" : "";
+      preReq2Text += "\nor " + preReq2.altCnt + " " + preReq2.altId + s + " (" + tricks[preReq2.altId].availableCnt + "/" + preReq2.altCnt + ")";
+      lineHeight = "1.2em";
     }
-    let preReq2P = getColouredPElement(preReq2Text, preReqSatisfied(preReq2));
-    reqsElement.appendChild(preReq2P);
+    reqsUL.appendChild(getColouredElement(preReq2Text, preReqSatisfied(preReq2), lineHeight));
   }
+}
 
+function startsWithVowel(id) {
+  let firstChar = id[0].toUpperCase();
+  return "AEIOU".includes(firstChar);
+}
+function showHoverText(trick, event) {
+  let topMessage = document.querySelector("h1.message")
+  let reqsHeading = document.querySelector("h3.reqs");
+  if(event.target.classList.contains("trick_shape_path_learned")) {
+    // trick has been learned
+    event.target.parentElement.querySelector(".trick_text_path_learned").style.fill = "#c8c8f0";
+    let an = startsWithVowel(trick.id) ? "an" : "a";
+    topMessage.innerHTML = "Click to do " + an + " " + trick.id + "!";
+    topMessage.style.color = "#3A3AC1";
+    let expGain = document.querySelector("#expGain");
+    expGain.innerHTML = "( +" + trick.expGain + " exp. )";
+    return;
+  }
+  else if(event.target.classList.contains("trick_shape_path_available")) {
+    // trick is avaiable to learn
+    event.target.parentElement.querySelector(".trick_text_path_available").style.fill = metReqColour; //"#66b366";
+    topMessage.innerHTML = "Click to learn " + trick.id;
+    topMessage.style.color = metReqColour;
+    reqsHeading.innerHTML = "You can learn " + trick.id + "!";
+    reqsHeading.style.color = metReqColour;
+  }
+  else {
+    // trick is not available yet
+    console.assert(event.target.classList.contains("trick_shape_path"));
+    topMessage.innerHTML = trick.id + " makes no sense (҂⌣̀_⌣́)";
+    topMessage.style.color = unmetReqColour;
+    reqsHeading.innerHTML = "Requirements to learn " + trick.id + ":";
+    reqsHeading.style.color = unmetReqColour;
+  }
+  appendReqsToUL(trick);
 }
 
 function isVisible(trick) {
@@ -61,7 +117,8 @@ function updateVisible(trick) { // only changes hidden SVGs to visible
   if(svg.classList.contains("trick_svg_hidden") && isVisible(trick)) {
     // trick is hidden but it should be available
     svg.setAttribute("class", "trick_svg_visible");
-    svg.querySelector(".trick_shape_path").addEventListener("mouseover", trick.boundShowReqs, false);
+    svg.querySelector(".trick_shape_path").addEventListener("mouseover", trick.boundShowHoverText, false);
+    svg.querySelector(".trick_shape_path").addEventListener("mouseout", hideHoverText, false);
   }
 }
 
@@ -132,8 +189,8 @@ function decreaseAvailableCntsInPreReqs(trick) {
     }
   }
 }
-function learnTrick(trick, event){
-  // learnTrick is only called on available tricks
+
+function learnTrick(trick, event){ // learnTrick is only called on available tricks
   let shape_path = event.target; // event.target will always be the available shape path
   console.assert(shape_path.className.baseVal == "trick_shape_path_available");
   shape_path.removeEventListener("click", trick.boundLearnTrick, false);
@@ -141,13 +198,19 @@ function learnTrick(trick, event){
   shape_path.setAttribute("class", "trick_shape_path_learned");
   let text_path = shape_path.parentElement.getElementsByClassName("trick_text_path_available")[0];
   text_path.setAttribute("class", "trick_text_path_learned");
+  hideHoverText(event);
+  showHoverText(trick, event);
   trick.totalNumberDone = 1;
   trick.availableCnt = 1;
   decreaseAvailableCntsInPreReqs(trick);
-  for(var t in tricks) {
-    updateVisible(tricks[t]); // only changes hidden svgs to visible
-    updateAvailable(tricks[t]); // only updates visible tricks, and not learned tricks
+  for(let t in tricks) {
+    if(tricks[t].totalNumberDone == 0) {
+      tricks[t].expReq += expRamp; // increases all the unlearned tricks' expReq
+      updateVisible(tricks[t]); // only changes hidden svgs to visible
+      updateAvailable(tricks[t]); // only updates visible tricks, and not learned tricks
+    }
   }
+  expRamp += 2; // learning tricks takes a linearly growing amount of exp
 }
 
 function preReq(id, cnt, altId, altCnt) {
@@ -165,10 +228,9 @@ function trick(id, preReqs, expRequired, expGained) {
   this.totalNumberDone = 0; // 0 have been done initially
   this.availableCnt = 0; // 0 have been done initially
   this.boundLearnTrick = learnTrick.bind(null, this);
-  this.boundShowReqs = showReqs.bind(null, this);
+  this.boundShowHoverText = showHoverText.bind(null, this);
 }
 
-var exp = 0; //starting amount of experience
 var tricks = new Object(); // object containing all of the tricks except ollie
 tricks.doubleHeel = new trick("doubleHeel", [new preReq("heel", 8), new preReq("ollie", 2)], 18, 12);
 tricks.inwardDouble = new trick("inwardDouble", [new preReq("inward", 10), new preReq("heel", 15, "doubleHeel", 3)], 75, 25);
@@ -193,6 +255,11 @@ tricks.frontShuv = new trick("frontShuv", [new preReq("ollie", 3)], 3, 2);
 tricks.varialHeel = new trick("varialHeel", [new preReq("heel", 4), new preReq("frontShuv", 4)], 16, 9);
 
 tricks.ollie = new trick("ollie", [], 0, 1)
+
+var exp = 0; //starting amount of experience
+var expRamp = 0; // how much we increase the expReq of tricks each time a trick is learned
+//var levels = {};
 // add an event listener to ollie because it is available
 // don't show preReqs on hover for ollie
+updateVisible(tricks.ollie);
 updateAvailable(tricks.ollie); // we can do this by calling update avaialable
