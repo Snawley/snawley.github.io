@@ -110,14 +110,14 @@ function showHoverText(trick, event) {
 
 function sizeFraction(id) {
   let len = document.querySelector(id).innerHTML.length;
-  console.log(len);
+  document.querySelector(id).style.fontSize = "0.9em";
   if(len <= 3) document.querySelector(id).style.letterSpacing = "3px"; // Eg: 1/3
   else if(len == 4) document.querySelector(id).style.letterSpacing = "2px"; // Eg: 1/10
   else if(len == 5) document.querySelector(id).style.letterSpacing = "1px"; // Eg: 10/100
   else if(len == 6) document.querySelector(id).style.letterSpacing = "0px"; // Eg: 10/100
   else if(len >= 7) { // Eg: 100/200
-    document.querySelector(id).style.letterSpacing = "-1px";
-    document.querySelector(id).style.fontSize = "0.8em";
+    document.querySelector(id).style.letterSpacing = "1px";
+    document.querySelector(id).style.fontSize = "0.85em";
   }
 }
 function updateCounters(){
@@ -152,7 +152,7 @@ function updateCounters(){
   }
 }
 function levelUpMessage(nextLevel) {
-  $("h2.levelUp").html("You are now " + nextLevel.prefix + ":");
+  $("h2.levelUp").html("You are now" + nextLevel.prefix + ":");
   $("h1.levelUp").html(nextLevel.title);
   $("#levelUp").fadeIn(600);
   setTimeout(function(){
@@ -166,7 +166,7 @@ function updateLevel(){
   if(tricksLearned >= nextLevel.numTricks && exp >= nextLevel.expReq) { // go up a level!
     currentLevel++;
     levelUpMessage(nextLevel);
-    document.querySelector("h2.level").innerHTML = "You are " + nextLevel.prefix + ":";
+    document.querySelector("h2.level").innerHTML = "You are" + nextLevel.prefix + ":";
     document.querySelector("h3.level").innerHTML = nextLevel.title;
     exp -= nextLevel.expReq;
   }
@@ -336,16 +336,16 @@ var exp = 0; //starting amount of experience
 var tricksLearned = 0; // starting number of tricks that have been learned
 var currentLevel = -1; // initialize the starting level by calling updateLevel
 
-function level(title, numTricks, expReq, prefix="a") {
+function level(title, numTricks, expReq, prefix=" a") {
   this.prefix = prefix;
   this.title = title;
   this.numTricks = numTricks;
   this.expReq = expReq;
 }
-var levels = [new level("poser", 0, 0), new level("snake", 1, 2), new level("rat on a skateboard", 2, 5), new level("grom", 4, 9),
-              new level("park shark", 5, 14), new level("skate rat", 7, 20), new level("shredder", 8, 27), new level("street rat", 10, 35),
-              new level("gnarly dude", 11, 44), new level("shop skater", 13, 54), new level("local legend", 14, 65), new level("Am", 16, 77, "an"),
-              new level("gnarly shredder", 17, 90), new level("Pro", 19, 104), new level("unbeatable at SKATE", 21, 120, "")];
+var levels = [new level("poser", 0, 0), new level("snake", 1, 2), new level("rat on a skateboard", 2, 4), new level("grom", 4, 8),
+              new level("park shark", 5, 16), new level("skate rat", 7, 32), new level("shredder", 8, 48), new level("street rat", 10, 64),
+              new level("gnarly dude", 11, 80), new level("shop skater", 13, 96), new level("local legend", 14, 112), new level("Am", 16, 128, " an"),
+              new level("gnarly shredder", 17, 160), new level("Pro", 19, 200), new level("unbeatable at SKATE", 21, 400, "")];
 // add an event listener to ollie because it is available
 // don't show preReqs on hover for ollie
 updateVisible(tricks.ollie);
