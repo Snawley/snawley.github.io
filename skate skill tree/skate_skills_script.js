@@ -23,7 +23,7 @@ function hideHoverText(event) {
 var unmetReqColour = "#FFb3b3"; //pink
 var metReqColour = "#66b366"; // green
 var blue = "#3A3AC1"; // blue
-var lightBlue = "#c8c8f0"
+var lightBlue = "#c8c8f0"; // light blue
 var defaultLineHeight = "2.5rem";
 function getColouredElement(reqText, satisfied, lineHeight = defaultLineHeight) {
   let req = document.createElement("li");
@@ -151,13 +151,21 @@ function updateCounters(){
     document.querySelector("#trickCount").style.color = unmetReqColour;
   }
 }
-
+function levelUpMessage(nextLevel) {
+  $("h2.levelUp").html("You are now " + nextLevel.prefix + ":");
+  $("h1.levelUp").html(nextLevel.title);
+  $("#levelUp").fadeIn(600);
+  setTimeout(function(){
+    $("#levelUp").fadeOut(1000);//do what you need here
+  }, 1250);
+}
 function updateLevel(){
   // if the exp and tricksLearned requirement for the next level is met, go up a level!
   if(currentLevel == levels.length - 1) {alert("you are a winner!");return;} // we are at the highest level
   let nextLevel = levels[currentLevel + 1];
   if(tricksLearned >= nextLevel.numTricks && exp >= nextLevel.expReq) { // go up a level!
     currentLevel++;
+    levelUpMessage(nextLevel);
     document.querySelector("h2.level").innerHTML = "You are " + nextLevel.prefix + ":";
     document.querySelector("h3.level").innerHTML = nextLevel.title;
     exp -= nextLevel.expReq;

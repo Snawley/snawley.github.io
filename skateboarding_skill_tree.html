@@ -10,7 +10,7 @@
       body {
         user-select: none;
         font-family: "Kulim Park", serif;
-        color: #32323c;
+        color: #32323c; /* dark dark grey*/
       }
       .trick_svg_hidden { /* default for all svgs except for ollie */
         display: none; /* doesn't render the element on the page */
@@ -63,8 +63,8 @@
         fill: #fff;
       }
       .trick_shape_path_learned:hover {
-        stroke: #3A3AC1;
-        stroke-width: 4;
+        stroke: #c8c8f0;/*#3A3AC1;*/
+        stroke-width: 5;
       }
 
       .message {
@@ -156,10 +156,37 @@
         width: 50px;
         right: 3px;
         text-align: center;
-
+      }
+      #levelUp {
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        top: 200px;
+        width: 500px;
+        height: 200px;
+        background-color: #32323c;
+        border-radius: 30px;
+        border-width: 10px;
+        border-color: #c8c8f0; /*#3A3AC1;*/
+        border-style:solid;
+        display: none;
+      }
+      .levelUp {
+        position: relative;
+        top: 45px;
+        margin-block-start: 0;
+        margin-block-end: 10px;
+        font-size: 1.75em;
+        color: #c8c8f0;
+        font-weight: normal;
+        text-align: center;
       }
 
     </style>
+
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
     <script type="text/javascript" src="skate skill tree/skate_skills_script.js" defer></script>
 
 </head>
@@ -193,10 +220,12 @@
             <p id="trickCount"></p>
           </div>
         </div>
-
   </section>
 
-
+  <div id="levelUp">
+    <h2 class="levelUp"></h2>
+    <h1 class="levelUp" style="font-size:2.5em;font-weight:bold;font-style:italic;"></h1>
+  </div>
 
   <div> <!-- all of the SVGs in the trick tree -->
     <!-- outer circle -->
