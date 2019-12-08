@@ -7,7 +7,10 @@
     <title>Skateboard Trick Tree</title>
     <link href="https://fonts.googleapis.com/css?family=Kulim+Park&display=swap" rel="stylesheet">
     <style>
-    html {zoom:110%;}
+      html {
+        zoom:105%;
+        touch-action: manipulation;
+      }
       body {
         user-select: none;
         font-family: "Kulim Park", serif;
@@ -71,25 +74,16 @@
       .message {
         top: 5%;
         text-align: center;
-        margin-block-start: 0;
-        margin-block-end: 0;
+        margin-top: 0;
+        margin-bottom: 0;
         font-size: 2.5em;
         font-weight: bold;
         letter-spacing: 0em;
       }
       #expGain {
-        margin-block-start: 0.5em;
+        margin-top: 0.5em;
         font-size: 1.3em;
         color: #3A3AC1;
-      }
-      #line {
-        margin-top: 1%;
-        display: block;
-        margin-left: 0;
-        margin-right: 0;
-        height: 3px;
-        width: 0;
-        background-color: #c8c8f0;
       }
       #reqsElement, #levelElement {
         position: absolute;
@@ -106,8 +100,8 @@
         border-left: 2px solid #66b366;
       }
       .reqs, .level {
-        margin-block-start: 0;
-        margin-block-end: 0;
+        margin-top: 0;
+        margin-bottom: 0;
         font-size: 1.5em;
         line-height: 2.5rem;
         font-weight: normal;
@@ -147,8 +141,8 @@
       }
       #exp, #tricks, #expCount, #trickCount{
         position: absolute;
-        margin-block-start: 0;
-        margin-block-end: 0;
+        margin-top: 0;
+        margin-bottom: 0;
       }
      #exp, #tricks {
        right: 160px;
@@ -178,8 +172,8 @@
       .levelUp {
         position: relative;
         top: 45px;
-        margin-block-start: 0;
-        margin-block-end: 10px;
+        margin-top: 0;
+        margin-bottom: 10px;
         font-size: 1.75em;
         color: #c8c8f0;
         font-weight: normal;
@@ -195,7 +189,6 @@
 <body>
     <h1 class="message"></h1>
     <p class="message" id="expGain"></p>
-    <div id="line"></div>
 
     <section id="reqsElement">
       <h2 class="reqs" style="font-size:1.75em;"></h2>
