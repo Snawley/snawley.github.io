@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <title>Play Yahtzee!</title>
+
+    <link rel="stylesheet" type="text/css" href="dice_styles.css">
+
+    <script type="text/javascript" src="yahtzee_script.js" defer></script>
+
+    <style>
+      body{
+        color: white;
+        background-color: rgb(0, 64, 0);
+        display: flex;
+      }
+      #game {
+      /*  background-color: red;*/
+        flex: 75%;
+      }
+      #turn{
+        margin-top: 10px;
+        margin-bottom: 0px;
+        text-align: center;
+      }
+      #tables{
+        /*background-color: blue;*/
+        flex: 25%;
+        padding-top: 10px;
+        padding-right: 10px;
+      }
+      table, th, td {
+        border: 1px solid white;
+        border-collapse: collapse;
+      }
+      table{
+        table-layout: fixed;
+        margin-bottom: 20px;
+      }
+      .col1{
+        width: 280px;
+      }
+      .col2{
+        width: 60px;
+      }
+      .col3{
+        width: 60px;
+      }
+      th, td {
+        padding: 4px;
+      }
+      #click_to_roll{
+        width: 400px;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background-color: grey;
+        border-radius: 30px;
+        border: 5px solid grey;
+      }
+      #click_to_roll:hover{
+        border: 5px solid red;
+      }
+      #dice{
+        width: 280px;
+        margin-top: 15px;
+      }
+      #cup{
+        width: 250px;
+        transform: rotate(100deg);
+        position: absolute;
+        top: 180px;
+        left: 20px;
+        opacity: 90%;
+      }
+      #chosen{
+        position: absolute;
+        width: 500px;
+        bottom: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+      }
+    </style>
+</head>
+<body>
+  <div id="game">
+    <h2 id="turn">Player 1's Turn</h2>
+    <div id="click_to_roll">Click to roll dice:<br>
+      <img id="dice" src="die_images/five_dice.png">
+    </div>
+
+    <img id="cup" src="die_images/yahtzee_cup.png">
+
+    <div id="roll">
+    </div>
+
+    <div id="chosen">
+      <table>
+        <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </table>
+    </div>
+
+  </div>
+
+  <div id="tables">
+    <table id="upper_table">
+      <tr>
+        <th class="col1">Upper Section</th>
+        <th class="col2">Player1</th>
+        <th class="col3">Player2</th>
+      </tr>
+      <tr>
+        <td class="col1">
+          <object type="image/svg+xml" data="die_images/my_die_face_1.svg" class="die">
+            1
+          </object>
+          Count and add only <b>Aces</b>
+        </td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">
+          <object type="image/svg+xml" data="die_images/my_die_face_2.svg" class="die">
+            2
+          </object>
+          Count and add only <b>Twos</b>
+        </td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">
+          <object type="image/svg+xml" data="die_images/my_die_face_3.svg" class="die">
+            3
+          </object>
+          Count and add only <b>Threes</b>
+        </td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">
+          <object type="image/svg+xml" data="die_images/my_die_face_4.svg" class="die">
+            4
+          </object>
+          Count and add only <b>Fours</b>
+        </td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">
+          <object type="image/svg+xml" data="die_images/my_die_face_5.svg" class="die">
+            5
+          </object>
+          Count and add only <b>Fives</b>
+        </td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">
+          <object type="image/svg+xml" data="die_images/my_die_face_6.svg" class="die">
+            6
+          </object>
+          Count and add only <b>Sixes</b>
+        </td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">Total of Above</td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">Total > 63 (score 35)</td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">Total of Upper Section</td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+    </table>
+    <table id="lower_table">
+      <tr>
+        <th class="col1">Lower Section</th>
+      </tr>
+      <tr>
+        <td class="col1">3 of a kind (total of all dice)</td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">4 of a kind (total of all dice)</td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">Full House (score 25)</td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">Low Straight (score 30)</td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">High Straight (score 40)</td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">YAHTZEE (5 of a kind, score 60)</td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">Chance (total of all dice)</td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">Yahtzee Bonus (2nd Yahtzee, score 100)</td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+      <tr>
+        <td class="col1">Total of Lower Section</td>
+        <td class="col2"></td>
+        <td class="col3"></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <th class="col1">Grand Total</th>
+        <th class="col2"></th>
+        <th class="col3"></th>
+      </tr>
+    </table>
+  </div>
+
+<!--
+    <object type="image/svg+xml" data="die_images/my_die_face_1.svg" class="die">
+      1
+    </object>
+
+    <object type="image/svg+xml" data="die_images/my_die_face_2.svg" class="die">
+      2
+    </object>
+
+    <object type="image/svg+xml" data="die_images/my_die_face_3.svg" class="die">
+      3
+    </object>
+
+    <object type="image/svg+xml" data="die_images/my_die_face_4.svg" class="die">
+      4
+    </object>
+
+    <object type="image/svg+xml" data="die_images/my_die_face_5.svg" class="die">
+      5
+    </object>
+
+    <object type="image/svg+xml" data="die_images/my_die_face_6.svg" class="die">
+      6
+    </object>
+  -->
+
+</body>
+</html>

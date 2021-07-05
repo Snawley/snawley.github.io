@@ -1,0 +1,38 @@
+.die {
+  width: 10%;
+  height: 10%;
+}
+.die_hole_top {
+  stop-color: #bbbbbb;
+}
+.die_hole_bottom {
+  stop-color: #ffffff;
+}
+.die_top {
+  stop-color: #ff8080;
+}
+.die_bright_highlights {
+  stop-color: #ef7070;
+}
+.die_hole_edge{
+  fill: #df6060;
+}
+
+.die_highlights {
+  stop-color: #cf5050;
+}
+.die_upper {
+  stop-color: #bf4040;
+}
+.die_edge_top {
+  stop-color: #af3030;
+}
+.die_lower {
+  stop-color: #9f2020;
+}
+.die_bottom{
+  stop-color: #8f1010;
+}
+.die_edge_bottom {
+  stop-color: #7f0000;
+}
